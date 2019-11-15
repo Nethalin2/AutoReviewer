@@ -1,2 +1,4 @@
-.vs
-.ionide
+**/.vs
+**/.ionide
+**/bin/Debug
+**/0bj

@@ -31,8 +31,8 @@ namespace WordIterator
 
             try
             {
-                //fileName = Filepath.Full(); 
-                object fileName = Path.Combine(@"C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\AutoreviewerSideAssets", "EU-ID D01 - ZDMP-ID D1.1 - Project Handbook - Annex - StyleGuide v1.0.2.docx");
+                object fileName = Filepath.Full(); 
+                // object fileName = Path.Combine(@"C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\AutoreviewerSideAssets", "EU-ID D01 - ZDMP-ID D1.1 - Project Handbook - Annex - StyleGuide v1.0.2.docx");
                 //}
                 //catch
                 //{
@@ -66,48 +66,49 @@ namespace WordIterator
                     //{
 
 
-                        //if (document.LanguageDetected == true)
+                    //if (document.LanguageDetected == true)
+                    //{
+                    //    document.LanguageDetected = false;
+                    //    document.DetectLanguage();
+
+                    //}
+                    //else
+                    //{
+                    //    try
+                    //    {
+                    //        document.DetectLanguage();
+
+                    //    }
+                    //    catch
+                    //    {
+                    //        // Console.WriteLine("DetectLanguage() failed!");
+                    //    }
+
+                    //}
+                    if (document.Words[k].LanguageID == WdLanguageID.wdEnglishUK || document.Words[k].LanguageID == WdLanguageID.wdEnglishUS)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        //Console.WriteLine(text+" is a UK/US English word.");
+                        Console.Write(text);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("\n" + document.Words[k].Text);
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("The language of this word is not English.");
+
+                        //try
                         //{
-                        //    document.LanguageDetected = false;
-                        //    document.DetectLanguage();
-
+                        //    document.Words[k].LanguageID = WdLanguageID.wdEnglishUK;
                         //}
-                        //else
+                        //catch
                         //{
-                        //    try
-                        //    {
-                        //        document.DetectLanguage();
-
-                        //    }
-                        //    catch
-                        //    {
-                        //        // Console.WriteLine("DetectLanguage() failed!");
-                        //    }
-
+                        //    Console.WriteLine("Correcting language failed!");
                         //}
-                        if (document.Words[k].LanguageID == WdLanguageID.wdEnglishUK || document.Words[k].LanguageID == WdLanguageID.wdEnglishUS)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            //Console.WriteLine(text+" is a UK/US English word.");
-                            Console.Write(text);
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Cyan;
-                            Console.WriteLine("\n"+document.Words[k].Text);
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("The language of this word is not English.");
-                            //try
-                            //{
-                            //    document.Words[k].LanguageID = WdLanguageID.wdEnglishUK;
-                            //}
-                            //catch
-                            //{
-                            //    Console.WriteLine("Correcting language failed!");
-                            //}
-                        }
+                    }
 
-                        //object SpellingChecked = document.Words(k).SpellingChecked;
+                    //object SpellingChecked = document.Words(k).SpellingChecked;
                     //}
                     //Boolean SpellingChecked = document.Words[k].SpellingChecked;
                     //Console.WriteLine(text + (SpellingChecked ? "true" : "false"));
@@ -122,6 +123,7 @@ namespace WordIterator
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Finished iterating across document.");
+
                 //if (document.Paragraphs.Count > 0)
                 //{
                 //    var paragraph = document.Paragraphs.First;
