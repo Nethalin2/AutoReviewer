@@ -12,7 +12,7 @@ namespace WordIterator
 {
     class Spacing
     {
-        InteropManager im;
+        //InteropManager im;
         public Spacing() 
         {
             //im = new InteropManager("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "justatest.docx");

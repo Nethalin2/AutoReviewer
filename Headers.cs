@@ -30,23 +30,67 @@ namespace WordIterator
 
     public void DetectHeader()
         {
-          Word.Application wordDoc =  im.getWord(); 
-          foreach (Paragraph paragraph in wordDoc.Application.ActiveDocument.Paragraphs)
-          {
+            Word.Application wordDoc =  im.getWord();
+            Document doc = wordDoc.Application.ActiveDocument;
+            //foreach (Paragraph paragraph in wordDoc.Application.ActiveDocument.Paragraphs)
+            for (int i = 1; i < doc.ListParagraphs.Count; i++)
+            {
+                Paragraph paragraph = doc.ListParagraphs[i];
+                Paragraph paragraph2 = doc.Paragraphs[i + 1];
+
+                if (paragraph.Format.LeftIndent != paragraph2.Format.LeftIndent)
+                {
+
+                    Style style = paragraph.get_Style() as Style;
+                    string styleName = style.NameLocal;
+
+                    if (styleName != "Heading 1" && styleName != "Heading 2" && styleName != "Heading 3" && styleName != "Heading 4")
+                    {
+                        if (paragraph.Format.SpaceAfter == 6)
+                        {
+                            //Console.WriteLine(paragraph.Range.Text);
+                            //Console.WriteLine("That's the correct spacing");
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine(paragraph.Range.Text);
+                            //Console.WriteLine("This paragraph's left indent is different to the next paragraph's left indent.");
+
+                            Console.ForegroundColor = ConsoleColor.Blue; 
+                            Console.WriteLine("Spacing needs to change to 6pts");
+                        }
+                    }
+                    else
+                    {
+                        //Console.WriteLine("This paragraph is a heading.");
+                    }
+                }
+            }
+            for (int i = 1; i < doc.Paragraphs.Count; i++)
+            {
+                Paragraph paragraph = doc.Paragraphs[i];
+                Paragraph paragraph2 = doc.Paragraphs[i + 1];
+               
+               
                 Style style = paragraph.get_Style() as Style;
                 int position = paragraph.ParaID;
                 string styleName = style.NameLocal;
                 string text = paragraph.Range.Text;
+
+                Console.ForegroundColor = ConsoleColor.Green;
+
                 Console.WriteLine(styleName + " " + position+"    "+(ShortString(text, 20).Replace("/n", " ").Replace("/r", " ").Trim()));
-                
                 //This checks the spacing after every paragraph.
-                if (paragraph.Format.SpaceAfter == 6)
-                {
-                    Console.WriteLine("That's the correct spacing");
-                } else
-                {
-                    Console.WriteLine("Spacing needs to change to 6pts");
-                }
+                //if (position == 360681186)
+                //{
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
+
+                Console.WriteLine("Left indent: "+paragraph.Format.LeftIndent);
+                //}
+
+                Console.ForegroundColor = ConsoleColor.Blue;
 
                 //This checks the heading size.
                 if (styleName == "Heading 1") 
