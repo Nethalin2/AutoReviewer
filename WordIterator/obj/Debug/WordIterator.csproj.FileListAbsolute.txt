@@ -1,0 +1,12 @@
+C:\Users\netha\source\repos\WordIterator\WordIterator\bin\Debug\WordIterator.exe.config
+C:\Users\netha\source\repos\WordIterator\WordIterator\bin\Debug\WordIterator.exe
+C:\Users\netha\source\repos\WordIterator\WordIterator\bin\Debug\WordIterator.pdb
+C:\Users\netha\source\repos\WordIterator\WordIterator\obj\Debug\WordIterator.csprojAssemblyReference.cache
+C:\Users\netha\source\repos\WordIterator\WordIterator\obj\Debug\WordIterator.exe
+C:\Users\netha\source\repos\WordIterator\WordIterator\obj\Debug\WordIterator.pdb
+C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\CSharp\AutoReviewer\WordIterator\bin\Debug\WordIterator.exe.config
+C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\CSharp\AutoReviewer\WordIterator\bin\Debug\WordIterator.pdb
+C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\CSharp\AutoReviewer\WordIterator\obj\Debug\WordIterator.exe
+C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\CSharp\AutoReviewer\WordIterator\obj\Debug\WordIterator.pdb
+C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\CSharp\AutoReviewer\WordIterator\bin\Debug\WordIterator.exe
+C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\CSharp\AutoReviewer\WordIterator\obj\Debug\WordIterator.csprojAssemblyReference.cache
