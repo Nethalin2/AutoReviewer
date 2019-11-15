@@ -1,4 +1,4 @@
 **/.vs
 **/.ionide
-**/bin/Debug
-**/0bj
+**/bin
+**/obj
