@@ -12,26 +12,27 @@ namespace WordIterator
 {
     class Headers
     {
-        InteropManager im;
+
+        private static InteropManager im = new InteropManager(Filepath.Folder(), Filepath.FileOnly());
+
+        private static Word.Application wordDoc = im.getWord();
+        private static Document doc = wordDoc.Application.ActiveDocument;
+
         //Document wordDoc = im.getWord();
         public Headers()
         {
-            im = new InteropManager("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "justatest.docx");
         }
 
         public string ShortString(string InputText, int MaxLength)
         {
-       
-        int l = InputText.Length;
-        int length = (l <= MaxLength ? l : MaxLength);
-        string newString = InputText.Substring(0, length);
+            int l = InputText.Length;
+            int length = (l <= MaxLength ? l : MaxLength);
+            string newString = InputText.Substring(0, length);
             return newString;
-    }
+        }
 
-    public void DetectHeader()
+        public void DetectLineSpacingAfterBullets()
         {
-            Word.Application wordDoc =  im.getWord();
-            Document doc = wordDoc.Application.ActiveDocument;
             //foreach (Paragraph paragraph in wordDoc.Application.ActiveDocument.Paragraphs)
             for (int i = 1; i < doc.ListParagraphs.Count; i++)
             {
@@ -57,7 +58,7 @@ namespace WordIterator
                             Console.WriteLine(paragraph.Range.Text);
                             //Console.WriteLine("This paragraph's left indent is different to the next paragraph's left indent.");
 
-                            Console.ForegroundColor = ConsoleColor.Blue; 
+                            Console.ForegroundColor = ConsoleColor.Blue;
                             Console.WriteLine("Spacing needs to change to 6pts");
                         }
                     }
@@ -67,10 +68,15 @@ namespace WordIterator
                     }
                 }
             }
+        }
+
+        public void DetectHeader()
+        {
+            
             for (int i = 1; i < doc.Paragraphs.Count; i++)
             {
                 Paragraph paragraph = doc.Paragraphs[i];
-                Paragraph paragraph2 = doc.Paragraphs[i + 1];
+                //Paragraph paragraph2 = doc.Paragraphs[i + 1];
                
                
                 Style style = paragraph.get_Style() as Style;
@@ -85,9 +91,9 @@ namespace WordIterator
                 //if (position == 360681186)
                 //{
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                //Console.ForegroundColor = ConsoleColor.Cyan;
 
-                Console.WriteLine("Left indent: "+paragraph.Format.LeftIndent);
+                //Console.WriteLine("Left indent: "+paragraph.Format.LeftIndent);
                 //}
 
                 Console.ForegroundColor = ConsoleColor.Blue;
@@ -97,7 +103,7 @@ namespace WordIterator
                 {
                     Console.WriteLine("Correct Heading Size");
                 }
-               else if (styleName == "Heading 2")
+                else if (styleName == "Heading 2")
                 {
                     Console.WriteLine("Correct Heading Size");
                 }

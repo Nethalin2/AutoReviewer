@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filepath.cs" />
     <Compile Include="Headers.cs" />
     <Compile Include="InteropManager.cs" />
     <Compile Include="Program.cs" />

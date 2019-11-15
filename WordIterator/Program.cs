@@ -17,29 +17,30 @@ namespace WordIterator
             //LanguageChecker();
 
             Headers thisHeader = new Headers();
-            thisHeader.DetectHeader();
+            // thisHeader.DetectHeader();
+            thisHeader.DetectLineSpacingAfterBullets();
             Console.ReadLine();
 
         }
         public static void LanguageChecker()
         {
             Object wordObject = null;
-            Microsoft.Office.Interop.Word.Application word = null;
+            Word.Application word = null;
             Document document = null;
 
             try
             {
 
-                object fileName = Path.Combine("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "ftestdoc3.docx");
-
+                object fileName = Filepath.Full();
+              
                 Word.Application wordApp = new Word.Application { Visible = true };
 
-                Word.Document aDoc = wordApp.Documents.Open(ref fileName, ReadOnly: false, Visible: true);
+                Document aDoc = wordApp.Documents.Open(ref fileName, ReadOnly: false, Visible: true);
 
                 aDoc.Activate();
-                wordObject = (Microsoft.Office.Interop.Word.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
+                wordObject = (Word.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
 
-                word = (Microsoft.Office.Interop.Word.Application)wordObject;
+                word = (Word.Application)wordObject;
                 word.Visible = false;
                 word.ScreenUpdating = false;
                 string fullPath = word.ActiveDocument.FullName;
@@ -58,12 +59,8 @@ namespace WordIterator
 
                         if (word.ActiveDocument.LanguageDetected == true)
                         {
-
-
-
                             word.ActiveDocument.LanguageDetected = false;
                             word.ActiveDocument.DetectLanguage();
-
 
                         }
                         else
@@ -72,8 +69,6 @@ namespace WordIterator
                         }
                         if (word.ActiveDocument.Range().LanguageID == WdLanguageID.wdEnglishUS)
                         {
-
-
                             Console.WriteLine("This is a U.S. English document.");
                         }
                         else
