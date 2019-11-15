@@ -14,11 +14,11 @@ namespace WordIterator
     {
         static void Main(string[] args)
         {
-            //LanguageChecker();
+            LanguageChecker();
 
-            Headers thisHeader = new Headers();
-            thisHeader.DetectHeader();
-            Console.ReadLine();
+            //Headers thisHeader = new Headers();
+            //thisHeader.DetectHeader();
+            //Console.ReadLine();
 
         }
         public static void LanguageChecker()
@@ -30,7 +30,7 @@ namespace WordIterator
             try
             {
 
-                object fileName = Path.Combine("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "ftestdoc3.docx");
+                object fileName = Path.Combine("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "justatest.docx");
 
                 Word.Application wordApp = new Word.Application { Visible = true };
 
@@ -60,7 +60,7 @@ namespace WordIterator
                         {
 
 
-
+                           
                             word.ActiveDocument.LanguageDetected = false;
                             word.ActiveDocument.DetectLanguage();
 
@@ -70,15 +70,16 @@ namespace WordIterator
                         {
                             word.ActiveDocument.DetectLanguage();
                         }
-                        if (word.ActiveDocument.Range().LanguageID == WdLanguageID.wdEnglishUS)
+                        if (word.ActiveDocument.Words[k].LanguageID == WdLanguageID.wdEnglishUS || word.ActiveDocument.Words[k].LanguageID == WdLanguageID.wdEnglishUK)
                         {
 
 
-                            Console.WriteLine("This is a U.S. English document.");
+                            Console.WriteLine("This is an English document.");
                         }
                         else
                         {
-                            Console.WriteLine("This is not a U.S. English document.");
+                            Console.WriteLine("This is not an English word.");
+                            Console.WriteLine(document.Words[k].Text);
                         }
 
                         //object SpellingChecked = document.Words(k).SpellingChecked;
