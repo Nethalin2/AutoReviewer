@@ -31,8 +31,8 @@ namespace WordIterator
 
             try
             {
-                //fileName = Filepath.Full(); 
-                object fileName = Path.Combine(@"C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\AutoreviewerSideAssets", "EU-ID D01 - ZDMP-ID D1.1 - Project Handbook - Annex - StyleGuide v1.0.2.docx");
+                object fileName = Filepath.Full(); 
+                // object fileName = Path.Combine(@"C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\AutoreviewerSideAssets", "EU-ID D01 - ZDMP-ID D1.1 - Project Handbook - Annex - StyleGuide v1.0.2.docx");
                 //}
                 //catch
                 //{
@@ -57,38 +57,38 @@ namespace WordIterator
                 for (int k = 1; k <= count; k++)
                 {
                     string text = document.Words[k].Text;
-                    int Bold = document.Words[k].Bold;
-
-                    for (k = 1; (k <= count); k++)
-                    {
+                    // int Bold = document.Words[k].Bold;
 
 
-                        if (document.LanguageDetected == true)
-                        {
-                            document.LanguageDetected = false;
-                            document.DetectLanguage();
 
-                        }
-                        else
-                        {
-                            try
-                            {
-                                document.DetectLanguage();
+                        //if (document.LanguageDetected == true)
+                        //{
+                        //    document.LanguageDetected = false;
+                        //    document.DetectLanguage();
 
-                            }
-                            catch
-                            {
-                                // Console.WriteLine("DetectLanguage() failed!");
-                            }
+                        //}
+                        //else
+                        //{
+                        //    try
+                        //    {
+                        //        document.DetectLanguage();
 
-                        }
+                        //    }
+                        //    catch
+                        //    {
+                        //        // Console.WriteLine("DetectLanguage() failed!");
+                        //    }
+
+                        //}
                         if (document.Words[k].LanguageID == WdLanguageID.wdEnglishUK || document.Words[k].LanguageID == WdLanguageID.wdEnglishUS)
                         {
                             // Console.WriteLine("This is a UK/US English word.");
                         }
                         else
                         {
-                            Console.WriteLine(document.Words[k].Text);
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            Console.WriteLine(text);
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("This is not a UK or US English word.");
                             //try
                             //{
@@ -107,26 +107,30 @@ namespace WordIterator
                     //MessageBox.Show(text + " " + Bold.ToString());
                     //MessageBox.Show(text)
                     //Console.WriteLine(text + " " + Bold.ToString());
-                }
+  
                 //for (int r = 0; r <= document.Characters.Count; r++)
                 //{
                 //    Console.WriteLine(document.Characters[r]+ " " + document.Characters[r].CharacterStyle.toString());
                 //}
 
 
-                if (document.Paragraphs.Count > 0)
-                {
-                    var paragraph = document.Paragraphs.First;
-                    var lastCharPos = paragraph.Range.Sentences.First.End - 1;
-                    MessageBox.Show(lastCharPos.ToString());
-                }
+                //if (document.Paragraphs.Count > 0)
+                //{
+                //    var paragraph = document.Paragraphs.First;
+                //    var lastCharPos = paragraph.Range.Sentences.First.End - 1;
+                //    MessageBox.Show(lastCharPos.ToString());
+                //}
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
             //Console.ReadLine();
-            word.Quit();
+            //if (word != null)
+            //{
+            //     word.Quit();
+            //}
+           
 
         }
     }
