@@ -129,8 +129,12 @@ namespace WordIterator
                         //    Console.WriteLine("Correcting language failed!");
                         //}
                     }
-
+                    bool SpellingChecked = document.Words[k].SpellingChecked;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Spelling check is set to " + (SpellingChecked ? "true" : "false"));
                     //object SpellingChecked = document.Words(k).SpellingChecked;
+
+
                 }
                 
 
