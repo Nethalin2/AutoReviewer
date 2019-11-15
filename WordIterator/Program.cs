@@ -14,12 +14,12 @@ namespace WordIterator
     {
         static void Main(string[] args)
         {
-            //LanguageChecker();
+            LanguageChecker();
 
-            Headers thisHeader = new Headers();
-            // thisHeader.DetectHeader();
-            thisHeader.DetectLineSpacingAfterBullets();
-            Console.ReadLine();
+            //Headers thisHeader = new Headers();
+            //// thisHeader.DetectHeader();
+            //thisHeader.DetectLineSpacingAfterBullets();
+            //Console.ReadLine();
 
         }
         public static void LanguageChecker()
@@ -28,10 +28,16 @@ namespace WordIterator
             Word.Application word = null;
             Document document = null;
 
+
             try
             {
-
-                object fileName = Filepath.Full();
+                //fileName = Filepath.Full(); 
+                object fileName = Path.Combine(@"C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\AutoreviewerSideAssets", "EU-ID D01 - ZDMP-ID D1.1 - Project Handbook - Annex - StyleGuide v1.0.2.docx");
+                //}
+                //catch
+                //{
+                //    throw new FileNotFoundException("Filepath.Full() not working");
+                //}
               
                 Word.Application wordApp = new Word.Application { Visible = true };
 
@@ -40,7 +46,7 @@ namespace WordIterator
                 aDoc.Activate();
                 wordObject = (Word.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
 
-                word = (Word.Application)wordObject;
+                word = (Microsoft.Office.Interop.Word.Application)wordObject;
                 word.Visible = false;
                 word.ScreenUpdating = false;
                 string fullPath = word.ActiveDocument.FullName;
@@ -57,23 +63,41 @@ namespace WordIterator
                     {
 
 
-                        if (word.ActiveDocument.LanguageDetected == true)
+                        if (document.LanguageDetected == true)
                         {
-                            word.ActiveDocument.LanguageDetected = false;
-                            word.ActiveDocument.DetectLanguage();
+                            document.LanguageDetected = false;
+                            document.DetectLanguage();
 
                         }
                         else
                         {
-                            word.ActiveDocument.DetectLanguage();
+                            try
+                            {
+                                document.DetectLanguage();
+
+                            }
+                            catch
+                            {
+                                // Console.WriteLine("DetectLanguage() failed!");
+                            }
+
                         }
-                        if (word.ActiveDocument.Range().LanguageID == WdLanguageID.wdEnglishUS)
+                        if (document.Words[k].LanguageID == WdLanguageID.wdEnglishUK || document.Words[k].LanguageID == WdLanguageID.wdEnglishUS)
                         {
-                            Console.WriteLine("This is a U.S. English document.");
+                            // Console.WriteLine("This is a UK/US English word.");
                         }
                         else
                         {
-                            Console.WriteLine("This is not a U.S. English document.");
+                            Console.WriteLine(document.Words[k].Text);
+                            Console.WriteLine("This is not a UK or US English word.");
+                            //try
+                            //{
+                            //    document.Words[k].LanguageID = WdLanguageID.wdEnglishUK;
+                            //}
+                            //catch
+                            //{
+                            //    Console.WriteLine("Correcting language failed!");
+                            //}
                         }
 
                         //object SpellingChecked = document.Words(k).SpellingChecked;
