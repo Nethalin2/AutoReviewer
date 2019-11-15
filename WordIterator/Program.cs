@@ -30,7 +30,7 @@ namespace WordIterator
             try
             {
 
-                object fileName = Path.Combine("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "ftestdoc3.docx");
+                object fileName = Path.Combine("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "justatest.docx");
 
                 Word.Application wordApp = new Word.Application { Visible = true };
 
@@ -52,8 +52,8 @@ namespace WordIterator
                     string text = document.Words[k].Text;
                     int Bold = document.Words[k].Bold;
 
-                    for (k = 1; (k <= count); k++)
-                    {
+                    //for (k = 1; (k <= count); k++)
+                    //{
                         Boolean SpellingChecked = document.Words[k].SpellingChecked;
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine(text + "Spelling check is set to " + (SpellingChecked ? "true" : "false"));
@@ -89,7 +89,7 @@ namespace WordIterator
                         }
 
                         //object SpellingChecked = document.Words(k).SpellingChecked;
-                    }
+                    //}
                    
                     //MessageBox.Show(text + " " + Bold.ToString());
                     //MessageBox.Show(text)
