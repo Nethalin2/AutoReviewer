@@ -30,7 +30,7 @@ namespace WordIterator
             try
             {
 
-                object fileName = Path.Combine("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "justatest.docx");
+                object fileName = Path.Combine("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "ftestdoc3.docx");
 
                 Word.Application wordApp = new Word.Application { Visible = true };
 
@@ -54,6 +54,9 @@ namespace WordIterator
 
                     for (k = 1; (k <= count); k++)
                     {
+                        Boolean SpellingChecked = document.Words[k].SpellingChecked;
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine(text + "Spelling check is set to " + (SpellingChecked ? "true" : "false"));
 
 
                         if (word.ActiveDocument.LanguageDetected == true)
@@ -63,6 +66,7 @@ namespace WordIterator
                            
                             word.ActiveDocument.LanguageDetected = false;
                             word.ActiveDocument.DetectLanguage();
+                         
 
 
                         }
@@ -73,19 +77,20 @@ namespace WordIterator
                         if (word.ActiveDocument.Words[k].LanguageID == WdLanguageID.wdEnglishUS || word.ActiveDocument.Words[k].LanguageID == WdLanguageID.wdEnglishUK)
                         {
 
-
+                            Console.ForegroundColor = ConsoleColor.Blue;
                             Console.WriteLine("This is an English document.");
                         }
                         else
                         {
+                            Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("This is not an English word.");
+                            document.Words[k].Font.ColorIndex = Word.WdColorIndex.wdYellow;
                             Console.WriteLine(document.Words[k].Text);
                         }
 
                         //object SpellingChecked = document.Words(k).SpellingChecked;
                     }
-                    //Boolean SpellingChecked = document.Words[k].SpellingChecked;
-                    //Console.WriteLine(text + (SpellingChecked ? "true" : "false"));
+                   
                     //MessageBox.Show(text + " " + Bold.ToString());
                     //MessageBox.Show(text)
                     //Console.WriteLine(text + " " + Bold.ToString());
