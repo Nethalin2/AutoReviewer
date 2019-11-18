@@ -14,9 +14,10 @@ namespace WordIterator
     {
         static void Main(string[] args)
         {
-            Comments.AddToEveryPara();
 
-            // LanguageChecker();
+            // Comments.AddToEveryPara();
+
+            LanguageChecker();
 
             //Headers thisHeader = new Headers();
             //// thisHeader.DetectHeader();
@@ -65,6 +66,13 @@ namespace WordIterator
 
                 for (int k = 1; k <= count; k++)
                 {
+                    if (k % 50 == 0)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Yellow;
+                        Console.Write(" "+k+" / "+count+" ");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                    }
+
                     string text = document.Words[k].Text;
                     //int Bold = document.Words[k].Bold;
 
@@ -114,6 +122,10 @@ namespace WordIterator
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.Write(text);
                         countUSEnglish++;
+                        if (countUSEnglish % 10 == 1)
+                        {
+                            Comments.Add(aDoc, k, "This is US English but should be UK English.");
+                        }
                     }
                     else
                     {
@@ -122,6 +134,10 @@ namespace WordIterator
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("This is not a UK or US English word.");
                         countNotUKUSEnglish++;
+                        if (countNotUKUSEnglish % 10 == 1)
+                        {
+                            Comments.Add(aDoc, k, "This is not UK English but should be.");
+                        }
                         //try
                         //{
                         //    document.Words[k].LanguageID = WdLanguageID.wdEnglishUK;
@@ -131,11 +147,24 @@ namespace WordIterator
                         //    Console.WriteLine("Correcting language failed!");
                         //}
                     }
+
+                    /*
                     bool SpellingChecked = document.Words[k].SpellingChecked;
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("Spelling check is set to " + (SpellingChecked ? "true" : "false"));
                     //object SpellingChecked = document.Words(k).SpellingChecked;
+                    */
 
+                    //Save to a new file.
+                    try
+                    {
+                        aDoc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Failed to save new file — "+ex.ToString());
+                    }
 
                 }
                 

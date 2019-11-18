@@ -10,6 +10,40 @@ namespace WordIterator
 {
     class Comments
     {
+        public static void Add(Document doc, Paragraph placeForComment, object comment)
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("\nAdding a comment of ");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write(comment);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("!");
+
+            doc.Comments.Add(placeForComment.Range, ref comment);
+        }
+
+        public static void Add(Document doc, int k, object comment)
+        {
+            try
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("\nAdding a comment of ");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write(comment);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(" to word #"+k+".");
+
+                doc.Comments.Add(doc.Words[k], ref comment);
+            }
+            
+            catch
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Failed to add a comment to word #" + k + "!");
+            }
+            
+        }
+
         public static void AddToEveryPara()
         {
             Console.WriteLine("Trying to write a comment on all the paragraphs!");
