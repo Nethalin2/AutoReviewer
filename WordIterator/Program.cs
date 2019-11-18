@@ -14,7 +14,7 @@ namespace WordIterator
     {
         static void Main(string[] args)
         {
-            Comments.AddComment();
+            Comments.AddToEveryPara();
 
             // LanguageChecker();
 
