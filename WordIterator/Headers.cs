@@ -49,14 +49,10 @@ namespace WordIterator
 
                 if (listString != "" && listString2 != "" && paragraph.Format.LeftIndent != paragraph2.Format.LeftIndent)
                 {
-
                     Style style = paragraph.get_Style() as Style;
                     string styleName = style.NameLocal;
-                    Style style2 = paragraph2.get_Style() as Style;
-                    string styleName2 = style2.NameLocal;
 
-                    if (styleName != "Heading 1" && styleName != "Heading 2" && styleName != "Heading 3" && styleName != "Heading 4"
-                        && styleName2 != "Heading 1" && styleName2 != "Heading 2" && styleName2 != "Heading 3" && styleName2 != "Heading 4")
+                    if (styleName != "Heading 1" && styleName != "Heading 2" && styleName != "Heading 3" && styleName != "Heading 4")
                     {
                         if (paragraph.Format.SpaceAfter == 6)
                         {
