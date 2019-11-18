@@ -12,47 +12,18 @@ namespace WordIterator
     {
         public static void AddComment()
         {
-            //Load the default instance of Document class
-
+            //Load the default instance of Document class.
             Document doc = LoadDocument.Default();
 
-            //Get the paragraph that you want to add comment
+            //Get a paragraph to comment on.
+            Paragraph para = doc.Paragraphs[1];
 
-            Paragraph para = doc.Sections[0].Paragraphs[6];
+            // Add a comment.
+            object text = "Add a comment to the first paragraph.";
+            doc.Comments.Add(para.Range, ref text);
 
-
-            //Insert a start comment mark at the beginning of the paragraph
-
-            CommentMark startCommentMark = new CommentMark(doc);
-
-            startCommentMark.Type = CommentMarkType.CommentStart;
-
-            para.ChildObjects.Insert(0, startCommentMark);
-
-
-            //Add an end comment mark at the end of the paragraph
-
-            CommentMark endCommentMark = new CommentMark(doc);
-
-            endCommentMark.Type = CommentMarkType.CommentEnd;
-
-            para.ChildObjects.Add(endCommentMark);
-
-
-            //Add a comment to the paragraph and specify the content and author
-
-            Comment comment = new Comment(doc);
-
-            comment.Body.AddParagraph().AppendText("This paragraph explains how to write an abstract.");
-
-            comment.Format.Author = "John";
-
-            para.ChildObjects.Add(comment);
-
-
-            //Save to file
-
-            doc.SaveToFile("CommentOnPara.docx", FileFormat.Docx2013);
+            //Save to a new file.
+            doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
         }
     }
 }
