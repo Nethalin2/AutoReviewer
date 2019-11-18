@@ -63,6 +63,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoadDocument.cs" />
+    <Compile Include="Comments.cs" />
     <Compile Include="Filepath.cs" />
     <Compile Include="Headers.cs" />
     <Compile Include="InteropManager.cs" />

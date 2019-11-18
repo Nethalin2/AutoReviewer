@@ -12,13 +12,9 @@ namespace WordIterator
     {
         public static void AddComment()
         {
-            //Initialize an instance of Document class
+            //Load the default instance of Document class
 
-            Document doc = new Document();
-
-            //Load a Word document
-
-            doc.LoadFromFile("template.docx");
+            Document doc = LoadDocument.Default();
 
             //Get the paragraph that you want to add comment
 
