@@ -12,14 +12,22 @@ namespace WordIterator
     {
         public static void Add(Document doc, Paragraph placeForComment, object comment)
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("\nAdding a comment of ");
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write(comment);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("!");
+            try
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("\nAdding a comment of ");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write(comment);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("!");
 
-            doc.Comments.Add(placeForComment.Range, ref comment);
+                doc.Comments.Add(placeForComment.Range, ref comment);
+            }
+            catch
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Failed to add a comment to paragraph!");
+            }
         }
 
         public static void Add(Document doc, int k, object comment)
@@ -41,7 +49,6 @@ namespace WordIterator
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Failed to add a comment to word #" + k + "!");
             }
-            
         }
 
         public static void AddToEveryPara()

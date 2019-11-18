@@ -17,11 +17,12 @@ namespace WordIterator
 
             // Comments.AddToEveryPara();
 
-            LanguageChecker();
+            // LanguageChecker();
 
-            //Headers thisHeader = new Headers();
+            Headers thisHeader = new Headers();
             //// thisHeader.DetectHeader();
-            //thisHeader.DetectLineSpacingAfterBullets();
+            thisHeader.DetectLineSpacingAfterBullets();
+
             Console.ReadLine();
 
         }

@@ -7,6 +7,7 @@ public class Filepath
     private static readonly String folderMark = @"C:\Users\netha\Documents\FSharpTest\FTEST";
     private static readonly String fileDuncan = "EU-ID D01 - ZDMP-ID D1.1 - Project Handbook - Annex - StyleGuide v1.0.2.docx";
     // private static readonly String fileDuncan = "windows.docx";
+    // private static readonly String fileDuncan = "handbookAllUKEnglish.docx";
     private static readonly String fileMark = "ftestdoc3.docx";
     private static readonly String fullDuncan = Path.Combine(folderDuncan, fileDuncan);
     private static readonly String fullMark = Path.Combine(folderMark, fileMark);
