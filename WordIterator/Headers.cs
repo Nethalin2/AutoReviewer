@@ -37,6 +37,7 @@ namespace WordIterator
             Console.WriteLine("Checking every bullet for 6pt line-spacing between indentation levels...");
 
             int badSpacingCount = 0;
+            int badSpacingFailCount = 0;
 
             //foreach (Paragraph paragraph in wordDoc.Application.ActiveDocument.Paragraphs)
             for (int i = 1; i < doc.Paragraphs.Count; i++)
@@ -65,11 +66,25 @@ namespace WordIterator
                             Console.WriteLine(paragraph.Range.Text);
                             //Console.WriteLine("This paragraph's left indent is different to the next paragraph's left indent.");
 
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Spacing needs to change to 6pt.");
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("Detected line-spacing that should be 6pt but isn’t.");
 
-                            Comments.Add(doc, paragraph, "Line-spacing needs to change to 6pt.");
                             badSpacingCount++;
+
+                            try
+                            {
+                                paragraph.Format.SpaceAfter = 6;
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine("Spacing has been changed to 6pt.");
+                                Comments.Add(doc, paragraph, "Line-spacing has been changed to 6pt.");
+                            }
+                            catch
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Failed to automatically change line-spacing to 6pt.");
+                                Comments.Add(doc, paragraph, "Line-spacing needs to change to 6pt.");
+                                badSpacingFailCount++;
+                            }
                         }
                     }
                     else
@@ -79,12 +94,15 @@ namespace WordIterator
                 }
             }
 
+            //// Give feedback having gone through the document.
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Finished checking every bullet.");
-            Console.ForegroundColor = badSpacingCount == 0 ? ConsoleColor.Green : ConsoleColor.Red;
-            Console.WriteLine("There are " + badSpacingCount + " instances where the spacing after a bullet needs to be changed to 6pt before a bullet of a different indentation.");
+            Console.ForegroundColor = badSpacingCount == 0 ? ConsoleColor.Green : ConsoleColor.Yellow;
+            Console.WriteLine("There were " + badSpacingCount + " instances where the spacing after a bullet needed to be changed to 6pt before a bullet of a different indentation.");
+            Console.ForegroundColor = badSpacingFailCount == 0 ? ConsoleColor.Green : ConsoleColor.Red;
+            Console.WriteLine("There are " + badSpacingFailCount + " instances where this could not be corrected automatically.");
 
-            //Save to a new file.
+            //// Save to a new file.
             doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
         }
 
