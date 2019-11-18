@@ -33,15 +33,23 @@ namespace WordIterator
 
         public void DetectLineSpacingAfterBullets()
         {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Checking every bullet for 6pt line-spacing between indentation levels...");
+
+            int badSpacingCount = 0;
+            int badSpacingFailCount = 0;
+
             //foreach (Paragraph paragraph in wordDoc.Application.ActiveDocument.Paragraphs)
-            for (int i = 1; i < doc.ListParagraphs.Count; i++)
+            for (int i = 1; i < doc.Paragraphs.Count; i++)
             {
-                Paragraph paragraph = doc.ListParagraphs[i];
+                Paragraph paragraph = doc.Paragraphs[i];
                 Paragraph paragraph2 = doc.Paragraphs[i + 1];
 
-                if (paragraph.Format.LeftIndent != paragraph2.Format.LeftIndent)
-                {
+                string listString = paragraph.Range.ListFormat.ListString;
+                string listString2 = paragraph2.Range.ListFormat.ListString;
 
+                if (listString != "" && listString2 != "" && paragraph.Format.LeftIndent != paragraph2.Format.LeftIndent)
+                {
                     Style style = paragraph.get_Style() as Style;
                     string styleName = style.NameLocal;
 
@@ -54,12 +62,29 @@ namespace WordIterator
                         }
                         else
                         {
-                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.ForegroundColor = ConsoleColor.Blue;
                             Console.WriteLine(paragraph.Range.Text);
                             //Console.WriteLine("This paragraph's left indent is different to the next paragraph's left indent.");
 
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine("Spacing needs to change to 6pts");
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("Detected line-spacing that should be 6pt but isn’t.");
+
+                            badSpacingCount++;
+
+                            try
+                            {
+                                paragraph.Format.SpaceAfter = 6;
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine("Spacing has been changed to 6pt.");
+                                Comments.Add(doc, paragraph, "Line-spacing has been changed to 6pt.");
+                            }
+                            catch
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Failed to automatically change line-spacing to 6pt.");
+                                Comments.Add(doc, paragraph, "Line-spacing needs to change to 6pt.");
+                                badSpacingFailCount++;
+                            }
                         }
                     }
                     else
@@ -68,6 +93,17 @@ namespace WordIterator
                     }
                 }
             }
+
+            //// Give feedback having gone through the document.
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Finished checking every bullet.");
+            Console.ForegroundColor = badSpacingCount == 0 ? ConsoleColor.Green : ConsoleColor.Yellow;
+            Console.WriteLine("There were " + badSpacingCount + " instances where the spacing after a bullet needed to be changed to 6pt before a bullet of a different indentation.");
+            Console.ForegroundColor = badSpacingFailCount == 0 ? ConsoleColor.Green : ConsoleColor.Red;
+            Console.WriteLine("There are " + badSpacingFailCount + " instances where this could not be corrected automatically.");
+
+            //// Save to a new file.
+            doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
         }
 
         public void DetectHeader()
