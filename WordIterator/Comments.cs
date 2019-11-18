@@ -12,7 +12,7 @@ namespace WordIterator
     {
         public static void AddComment()
         {
-            Console.WriteLine("Trying to write a comment on the first paragraph!");
+            Console.WriteLine("Trying to write a comment on all the paragraphs!");
 
             //Load the default instance of Document class.
             Document doc = LoadDocument.Default();
