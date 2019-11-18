@@ -14,7 +14,9 @@ namespace WordIterator
     {
         static void Main(string[] args)
         {
-            LanguageChecker();
+            Comments.AddComment();
+
+            // LanguageChecker();
 
             //Headers thisHeader = new Headers();
             //// thisHeader.DetectHeader();
