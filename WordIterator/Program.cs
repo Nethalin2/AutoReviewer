@@ -66,9 +66,11 @@ namespace WordIterator
 
                 for (int k = 1; k <= count; k++)
                 {
+                    //// Write a marker of where we are in the document every kth word.
                     if (k % 50 == 0)
                     {
-                        Console.BackgroundColor = ConsoleColor.Yellow;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+                        Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write(" "+k+" / "+count+" ");
                         Console.BackgroundColor = ConsoleColor.Black;
                     }
@@ -110,6 +112,8 @@ namespace WordIterator
                     //    Console.WriteLine("Correcting language failed!");
                     //}
 
+                    //// Check language
+
                     if (document.Words[k].LanguageID == WdLanguageID.wdEnglishUK)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -148,6 +152,8 @@ namespace WordIterator
                         //}
                     }
 
+                    //// Check whether spellcheck is checked.
+
                     /*
                     bool SpellingChecked = document.Words[k].SpellingChecked;
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -155,7 +161,7 @@ namespace WordIterator
                     //object SpellingChecked = document.Words(k).SpellingChecked;
                     */
 
-                    //Save to a new file.
+                    //// Save to a new file.
                     try
                     {
                         aDoc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
@@ -168,7 +174,8 @@ namespace WordIterator
 
                 }
                 
-
+                //// Give feedback after all the words have been checked.
+                
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\nFinished checking language.");
 
