@@ -1,2 +1,0 @@
-c:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\CSharp\AutoReviewer\WordIterator\bin\Debug\WordIterator.exe.config
-c:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\CSharp\AutoReviewer\WordIterator\obj\Debug\WordIterator.csprojResolveAssemblyReference.cache
