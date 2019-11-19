@@ -4,3 +4,6 @@ C:\Users\netha\source\repos\WordIterator\WordIterator\bin\Debug\WordIterator.pdb
 C:\Users\netha\source\repos\WordIterator\WordIterator\obj\Debug\WordIterator.exe
 C:\Users\netha\source\repos\WordIterator\WordIterator\obj\Debug\WordIterator.pdb
 C:\Users\netha\source\repos\WordIterator\WordIterator\obj\Debug\WordIterator.csprojAssemblyReference.cache
+C:\Users\netha\source\repos\WordIterator\WordIterator\bin\Debug\SharpDX.dll
+C:\Users\netha\source\repos\WordIterator\WordIterator\bin\Debug\SharpDX.pdb
+C:\Users\netha\source\repos\WordIterator\WordIterator\obj\Debug\WordIterator.csproj.CopyComplete
