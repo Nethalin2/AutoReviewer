@@ -22,7 +22,7 @@ namespace WordIterator
             // LanguageChecker();
 
             Headers.DetectHeaders(doc);
-            // Headers.DetectLineSpacingAfterBullets(doc);
+            Headers.DetectLineSpacingAfterBullets(doc);
 
             //// Save to a new file.
             doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
