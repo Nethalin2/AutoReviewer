@@ -33,7 +33,7 @@ namespace WordIterator
             return false;
         }
 
-
+        //// This checks a document for all paragraphs containing inline lists.
         public static void DetectAll(Document doc)
         {
             ConsoleC.WriteLine(ConsoleColor.White, "Checking every paragraph for inline lists...");
@@ -49,6 +49,7 @@ namespace WordIterator
             ConsoleC.WriteLine(ConsoleColor.White, "The check for inline lists is complete.");
         }
 
+        //// This was written to test whether IsMatch() works. It’s redundant now.
         public static void RunTests()
         {
             string[] texts =
