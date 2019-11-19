@@ -22,8 +22,11 @@ namespace WordIterator
             // LanguageChecker();
 
             Headers.DetectHeader(doc);
-            Headers.DetectLineSpacingAfterBullets(doc);
+            // Headers.DetectLineSpacingAfterBullets(doc);
 
+            //// Keep the console open even when the program has finished.
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nThe program has finished.");
             Console.ReadLine();
         }
 
