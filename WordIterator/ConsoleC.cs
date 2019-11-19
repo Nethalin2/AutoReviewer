@@ -32,5 +32,29 @@ namespace WordIterator
             Console.WriteLine(text);
             Console.ResetColor();
         }
+        public static void Write(ConsoleColor foreground, object text)
+        {
+            Console.ForegroundColor = foreground;
+            Console.Write(text.ToString());
+        }
+        public static void Write(ConsoleColor foreground, ConsoleColor background, object text)
+        {
+            Console.ForegroundColor = foreground;
+            Console.BackgroundColor = background;
+            Console.Write(text.ToString());
+            Console.ResetColor();
+        }
+        public static void WriteLine(ConsoleColor foreground, object text)
+        {
+            Console.ForegroundColor = foreground;
+            Console.WriteLine(text.ToString());
+        }
+        public static void WriteLine(ConsoleColor foreground, ConsoleColor background, object text)
+        {
+            Console.ForegroundColor = foreground;
+            Console.BackgroundColor = background;
+            Console.WriteLine(text.ToString());
+            Console.ResetColor();
+        }
     }
 }

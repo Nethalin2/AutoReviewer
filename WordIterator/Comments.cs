@@ -17,17 +17,14 @@ namespace WordIterator
         {
             try
             {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("\nAdding a comment — ");
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine(comment);
+                ConsoleC.Write(ConsoleColor.White, "\nAdding a comment — ");
+                ConsoleC.WriteLine(ConsoleColor.Blue, comment);
 
                 doc.Comments.Add(placeForComment.Range, ref comment);
             }
             catch
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Failed to add a comment to paragraph!");
+                ConsoleC.WriteLine(ConsoleColor.Red, "Failed to add a comment to paragraph!");
             }
         }
 
@@ -35,32 +32,26 @@ namespace WordIterator
         {
             try
             {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write("\nAdding a comment of ");
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write(comment);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(" to word #"+k+".");
+                ConsoleC.Write(ConsoleColor.White, "\nAdding a comment of ");
+                ConsoleC.Write(ConsoleColor.Blue, comment);
+                ConsoleC.WriteLine(ConsoleColor.White, " to word #"+k+".");
 
                 doc.Comments.Add(doc.Words[k], ref comment);
             }
             
             catch
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Failed to add a comment to word #" + k + "!");
+                ConsoleC.WriteLine(ConsoleColor.Red, "Failed to add a comment to word #" + k + "!");
             }
         }
 
         //// This function demonstrates that we can add a comment to (nearly) every paragraph if we like.
         public static void AddToEveryPara(Document doc)
         {
-            Console.WriteLine("Trying to write a comment on all the paragraphs!");
+            ConsoleC.WriteLine(ConsoleColor.White, "Trying to write a comment on all the paragraphs!");
 
             //// Load the default instance of Document class.
             // Document doc = LoadDocument.Default();
-
-            Console.ForegroundColor = ConsoleColor.Green;
 
             for (int i = 1; i < doc.Paragraphs.Count; i++)
             {
@@ -69,13 +60,11 @@ namespace WordIterator
                 {
                     object text = "This is a comment on Paragraph "+i+".";
                     doc.Comments.Add(doc.Paragraphs[i].Range, ref text);
-                    Console.WriteLine("Added a comment on Paragraph " + i + "!");
+                    ConsoleC.WriteLine(ConsoleColor.Green, "Added a comment on Paragraph " + i + "!");
                 }
                 catch (Exception ex)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Failed to add a comment to Paragraph " + i + " — "+ex.ToString());
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    ConsoleC.WriteLine(ConsoleColor.Red, "Failed to add a comment to Paragraph " + i + " — "+ex.ToString());
                 }
             }
 
