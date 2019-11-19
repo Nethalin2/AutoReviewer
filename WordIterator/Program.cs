@@ -14,18 +14,19 @@ namespace WordIterator
     {
         static void Main(string[] args)
         {
+            //// Load a document we can play with.
+            Document doc = LoadDocument.Default();
 
-            // Comments.AddToEveryPara();
+            // Comments.AddToEveryPara(doc);
 
             // LanguageChecker();
 
-            Headers thisHeader = new Headers();
-            //// thisHeader.DetectHeader();
-            thisHeader.DetectLineSpacingAfterBullets();
+            Headers.DetectHeader(doc);
+            Headers.DetectLineSpacingAfterBullets(doc);
 
             Console.ReadLine();
-
         }
+
         public static void LanguageChecker()
         {
             Object wordObject = null;

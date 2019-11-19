@@ -13,25 +13,17 @@ namespace WordIterator
     class Headers
     {
 
-        private static InteropManager im = new InteropManager(Filepath.Folder(), Filepath.FileOnly());
+        // private static InteropManager im = new InteropManager(Filepath.Folder(), Filepath.FileOnly());
 
-        private static Word.Application wordDoc = im.getWord();
-        private static Document doc = wordDoc.Application.ActiveDocument;
+        // private static Word.Application wordDoc = im.getWord();
+        // private static Document doc = wordDoc.Application.ActiveDocument;
 
-        //Document wordDoc = im.getWord();
-        public Headers()
-        {
-        }
+        // Document wordDoc = im.getWord();
+        //public Headers()
+        //{
+        //}
 
-        public string ShortString(string InputText, int MaxLength)
-        {
-            int l = InputText.Length;
-            int length = (l <= MaxLength ? l : MaxLength);
-            string newString = InputText.Substring(0, length);
-            return newString;
-        }
-
-        public void DetectLineSpacingAfterBullets()
+        public static void DetectLineSpacingAfterBullets(Document doc)
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Checking every bullet for 6pt line-spacing between indentation levels...");
@@ -39,7 +31,7 @@ namespace WordIterator
             int badSpacingCount = 0;
             int badSpacingFailCount = 0;
 
-            //foreach (Paragraph paragraph in wordDoc.Application.ActiveDocument.Paragraphs)
+            // foreach (Paragraph paragraph in wordDoc.Application.ActiveDocument.Paragraphs)
             for (int i = 1; i < doc.Paragraphs.Count; i++)
             {
                 Paragraph paragraph = doc.Paragraphs[i];
@@ -106,9 +98,8 @@ namespace WordIterator
             doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
         }
 
-        public void DetectHeader()
+        public static void DetectHeader(Document doc)
         {
-            
             for (int i = 1; i < doc.Paragraphs.Count; i++)
             {
                 Paragraph paragraph = doc.Paragraphs[i];
@@ -120,9 +111,12 @@ namespace WordIterator
                 string styleName = style.NameLocal;
                 string text = paragraph.Range.Text;
 
-                Console.ForegroundColor = ConsoleColor.Green;
-
-                Console.WriteLine(styleName + " " + position+"    "+(ShortString(text, 20).Replace("/n", " ").Replace("/r", " ").Trim()));
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.Write(styleName + "   ");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write(position + "    ");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine(StringMethods.TrimAndShorten(text, 20));
                 //This checks the spacing after every paragraph.
                 //if (position == 360681186)
                 //{
@@ -132,32 +126,36 @@ namespace WordIterator
                 //Console.WriteLine("Left indent: "+paragraph.Format.LeftIndent);
                 //}
 
-                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.ForegroundColor = ConsoleColor.Green;
 
                 //This checks the heading size.
                 if (styleName == "Heading 1") 
                 {
-                    Console.WriteLine("Correct Heading Size");
+                    Console.WriteLine("Acceptable heading size.");
                 }
                 else if (styleName == "Heading 2")
                 {
-                    Console.WriteLine("Correct Heading Size");
+                    Console.WriteLine("Acceptable heading size.");
                 }
                 else if (styleName == "Heading 3")
                 {
-                    Console.WriteLine("Correct Heading Size");
+                    Console.WriteLine("Acceptable heading size.");
                 }
                 else if (styleName == "Heading 4")
                 {
-                    Console.WriteLine("Correct Heading Size");
+                    Console.WriteLine("Acceptable heading size.");
                 }
                 else if (styleName == "Heading 5")
                 {
-                    Console.WriteLine("Header is too small");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Header is too small.");
+                    Comments.Add(doc, paragraph, "Heading level should be higher than 5.");
                 }
                 else if (styleName == "Heading 6")
                 {
-                    Console.WriteLine("Header is too small");      
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Header is too small.");
+                    Comments.Add(doc, paragraph, "Heading level should be higher than 5, but is 6.");
                 }
             }
         }

@@ -10,6 +10,9 @@ namespace WordIterator
 {
     class Comments
     {
+        //// Add() is overloaded such that it will accept either a Document, Paragraph, and String,
+        //// or a Document, int, and string. The string is coerced into an object to work with interop.
+        //// If the second parameter is an int 'k', it is treated as referring to the 'k'th word in the Document.
         public static void Add(Document doc, Paragraph placeForComment, object comment)
         {
             try
@@ -51,12 +54,13 @@ namespace WordIterator
             }
         }
 
-        public static void AddToEveryPara()
+        //// This function demonstrates that we can add a comment to (nearly) every paragraph if we like.
+        public static void AddToEveryPara(Document doc)
         {
             Console.WriteLine("Trying to write a comment on all the paragraphs!");
 
-            //Load the default instance of Document class.
-            Document doc = LoadDocument.Default();
+            //// Load the default instance of Document class.
+            // Document doc = LoadDocument.Default();
 
             Console.ForegroundColor = ConsoleColor.Green;
 
