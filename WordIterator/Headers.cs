@@ -188,15 +188,10 @@ namespace WordIterator
                     {
                         ConsoleC.WriteLine(ConsoleColor.Green, "Acceptable heading size.");
                     }
-                    else if (styleName == "Heading 5")
+                    else if (styleName == "Heading 5" || styleName == "Heading 6")
                     {
                         ConsoleC.WriteLine(ConsoleColor.Red, "Header is too small.");
-                        Comments.Add(doc, paragraph, "Heading level should be higher than 5.");
-                    }
-                    else if (styleName == "Heading 6")
-                    {
-                        ConsoleC.WriteLine(ConsoleColor.Red, "Header is too small.");
-                        Comments.Add(doc, paragraph, "Heading level should be higher than 5, but is 6.");
+                        Comments.Add(doc, paragraph, "Heading level should be 1, 2, 3, or 4, but this is a "+styleName+".");
                     }
                 }
             }
