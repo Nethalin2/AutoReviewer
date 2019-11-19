@@ -14,15 +14,20 @@ namespace WordIterator
     {
         static void Main(string[] args)
         {
+            // InlineLists.RunTests();
+
+
             //// Load a document we can play with.
             Document doc = LoadDocument.Default();
 
-            // Comments.AddToEveryPara(doc);
+            InlineLists.DetectAll(doc);
 
-            Headers.DetectHeaders(doc);
-            Headers.DetectLineSpacingAfterBullets(doc);
+            //// Comments.AddToEveryPara(doc);
 
-            LanguageChecker(doc);
+            //Headers.DetectHeaders(doc);
+            //Headers.DetectLineSpacingAfterBullets(doc);
+
+            //LanguageChecker(doc);
 
             //// Save to a new file.
             doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
