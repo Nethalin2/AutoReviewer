@@ -20,7 +20,7 @@ namespace WordIterator
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("\nAdding a comment — ");
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write(comment);
+                Console.WriteLine(comment);
 
                 doc.Comments.Add(placeForComment.Range, ref comment);
             }

@@ -21,8 +21,11 @@ namespace WordIterator
 
             // LanguageChecker();
 
-            Headers.DetectHeader(doc);
+            Headers.DetectHeaders(doc);
             // Headers.DetectLineSpacingAfterBullets(doc);
+
+            //// Save to a new file.
+            doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
 
             //// Keep the console open even when the program has finished.
             Console.ForegroundColor = ConsoleColor.Green;

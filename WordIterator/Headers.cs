@@ -102,71 +102,59 @@ namespace WordIterator
         //// Every first-level heading should be followed by either a second-level heading,
         //// circa 3 or 4 lines of body text and then a second-level heading,
         //// or body text and no subheading.
-        public static void DetectParaAfterHeadingOne(Document doc, int k)
-        {
+        public static void DetectParaAfterHeadingOne(Document doc, int k) {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Checking what’s after the heading...");
-            try
-            {
+            try {
                 Paragraph paragraph2 = doc.Paragraphs[k + 1];
-                try
-                {
+                try {
                     Style style2 = paragraph2.get_Style() as Style;
                     string styleName2 = style2.NameLocal;
 
-                    if (styleName2 == "Heading 2")
-                    {
+                    if (styleName2 == "Heading 2") {
                         Console.WriteLine("First-level heading is followed by a second-level heading — good!");
                     }
                     //// Assuming 75 characters per line.
-                    else if (paragraph2.Range.Text.Length > 150 && paragraph2.Range.Text.Length < 375)
-                    {
+                    else if (paragraph2.Range.Text.Length > 150 && paragraph2.Range.Text.Length < 375) {
                         Console.WriteLine("First-level heading is followed by circa 3 or 4 lines of " + styleName2 + " — good!");
                     }
-                    else
-                    {
-                        try
-                        {
+                    else {
+                        try {
                             Paragraph paragraph3 = doc.Paragraphs[k + 2];
                             Style style3 = paragraph3.get_Style() as Style;
                             string styleName3 = style3.NameLocal;
 
-                            if (styleName3 == "Heading 2")
-                            {
+                            if (styleName3 == "Heading 2") {
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 Console.WriteLine(paragraph2.Range.Text);
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("A first-level heading should be followed by either a second-level heading or 3 or 4 lines of body text.");
-                                Comments.Add(doc, paragraph2, "After a first-level heading, this should be either a second-level heading or 3 or 4 lines of body text.");
+                                string message = "After a first-level heading and before a second-level heading, there should be circa 3 or 4 lines of body text or none.";
+                                Console.WriteLine(message);
+                                Comments.Add(doc, paragraph2, message);
                             }
-                            else
-                            {
+                            else {
                                 Console.WriteLine("First-level heading is followed by " + styleName2 + " and " + styleName3 + " — good!");
                             }
                         }
-                        catch
-                        {
+                        catch {
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("First-level heading is followed by " + styleName2 + " — good!");
                         }
-                        
                     }
                 }
-                catch
-                {
+                catch {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Something failed with the style detection.");
                 }
             }
-            catch
-            {
+            catch {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("The last paragraph in the document is should not be a heading.");
                 Comments.Add(doc, doc.Paragraphs[k], "The last paragraph in the document should not be a heading.");
             }
         }
 
-        public static void DetectHeader(Document doc)
+        public static void DetectHeaders(Document doc)
         {
             try
             {
@@ -235,7 +223,7 @@ namespace WordIterator
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error in DetectHeader() — " + ex.ToString());
+                Console.WriteLine("Error in DetectHeaders() — " + ex.ToString());
             }
         }
     }
