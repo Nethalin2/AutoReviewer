@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Office.Interop.Word;
 using Word = Microsoft.Office.Interop.Word;
 using System.Windows.Forms;
+using System.Windows;
 
 namespace WordIterator
 {
@@ -14,6 +15,9 @@ namespace WordIterator
     {
         static void Main(string[] args)
         {
+            // LanguageChecker();
+            // DocumentCheckSpelling.DocCheckSpelling();
+
             // InlineLists.RunTests();
 
 
@@ -22,12 +26,12 @@ namespace WordIterator
 
             InlineLists.DetectAll(doc);
 
-            //// Comments.AddToEveryPara(doc);
+            // Comments.AddToEveryPara(doc);
 
-            //Headers.DetectHeaders(doc);
-            //Headers.DetectLineSpacingAfterBullets(doc);
+            Headers.DetectHeaders(doc);
+            Headers.DetectLineSpacingAfterBullets(doc);
 
-            //LanguageChecker(doc);
+            LanguageChecker(doc);
 
             //// Save to a new file.
             doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
@@ -39,14 +43,13 @@ namespace WordIterator
 
         public static void LanguageChecker()
         {
-            Object wordObject = null;
-            Word.Application word = null;
-            Document document = null;
-
-
+            Document document = LoadDocument.Default();
             try
             {
-                object fileName = Filepath.Full(); 
+                // object fileName = Path.Combine("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "ftestdoc3.docx");
+
+                // Word.Application wordApp = new Word.Application { Visible = true };
+
                 // object fileName = Path.Combine(@"C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\AutoreviewerSideAssets", "EU-ID D01 - ZDMP-ID D1.1 - Project Handbook - Annex - StyleGuide v1.0.2.docx");
                 //}
                 //catch
@@ -54,19 +57,6 @@ namespace WordIterator
                 //    throw new FileNotFoundException("Filepath.Full() not working");
                 //}
               
-                Word.Application wordApp = new Word.Application { Visible = true };
-
-                Document aDoc = wordApp.Documents.Open(ref fileName, ReadOnly: false, Visible: true);
-
-                aDoc.Activate();
-                wordObject = (Word.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
-
-                word = (Microsoft.Office.Interop.Word.Application)wordObject;
-                word.Visible = false;
-                word.ScreenUpdating = false;
-                string fullPath = word.ActiveDocument.FullName;
-
-                document = word.ActiveDocument;
                 int count = document.Words.Count;
 
                 int countUKEnglish = 0;
@@ -134,7 +124,7 @@ namespace WordIterator
                         countUSEnglish++;
                         if (countUSEnglish % 10 == 1)
                         {
-                            Comments.Add(aDoc, k, "This is US English but should be UK English.");
+                            Comments.Add(document, k, "This is US English but should be UK English.");
                         }
                     }
                     else
@@ -144,7 +134,7 @@ namespace WordIterator
                         countNotUKUSEnglish++;
                         if (countNotUKUSEnglish % 10 == 1)
                         {
-                            Comments.Add(aDoc, k, "This is not UK English but should be.");
+                            Comments.Add(document, k, "This is not UK English but should be.");
                         }
                         //try
                         //{
@@ -167,7 +157,7 @@ namespace WordIterator
                     //// Save to a new file.
                     try
                     {
-                        aDoc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
+                        document.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
                     }
                     catch (Exception ex)
                     {
@@ -202,6 +192,40 @@ namespace WordIterator
 
                 //ConsoleC.WriteLine(ConsoleColor.White, "Finished iterating across document.");
 
+                if (document.LanguageDetected == true)
+                {
+
+
+
+                    document.LanguageDetected = false;
+                    document.DetectLanguage();
+
+
+
+                }
+                else
+                {
+                    document.DetectLanguage();
+                }
+
+                for (int k = 1; k <= document.Words.Count; k++)
+                {
+                    if (document.Words[k].LanguageID == WdLanguageID.wdEnglishUS || document.Words[k].LanguageID == WdLanguageID.wdEnglishUK)
+                    {
+
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("This is an English document.");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("This is not an English word.");
+                        document.Words[k].Font.ColorIndex = Word.WdColorIndex.wdYellow;
+                        Console.WriteLine(document.Words[k].Text);
+                    }
+                }
+                
+            
                 //if (document.Paragraphs.Count > 0)
                 //{
                 //    var paragraph = document.Paragraphs.First;
@@ -216,10 +240,20 @@ namespace WordIterator
             }
 
             // Console.ReadLine();
-            if (word != null)
-            {
-                word.Quit();
+            // if (word != null)
+            // {
+            //     word.Quit();
+            // }
+            
+            finally { 
+                Console.ResetColor();
+
+                document.Save();
+                document.Close();
+                // word.Quit();
+                Console.ReadLine();
             }
+
 
         }
 
@@ -308,4 +342,8 @@ namespace WordIterator
         }
     }
    
+   
 }
+
+
+
