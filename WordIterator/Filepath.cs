@@ -13,7 +13,7 @@ public class Filepath
     private static readonly String fullMark = Path.Combine(folderMark, fileMark);
     private static readonly bool usingMarksFile = File.Exists(fullMark);
     private static readonly bool usingDuncansFile = File.Exists(fullDuncan);
-    private static readonly FileNotFoundException exception = new FileNotFoundException("Neither Mark's nor Duncan's file was found"); 
+    private static readonly FileNotFoundException exception = new FileNotFoundException("Neither Mark’s nor Duncan’s file was found"); 
 
 
     public static String Full()

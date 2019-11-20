@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Office.Interop.Word;
 using Word = Microsoft.Office.Interop.Word;
 using System.Windows.Forms;
+using System.Windows;
 
 namespace WordIterator
 {
@@ -14,28 +15,41 @@ namespace WordIterator
     {
         static void Main(string[] args)
         {
-
-            // Comments.AddToEveryPara();
-
             // LanguageChecker();
+            // DocumentCheckSpelling.DocCheckSpelling();
 
-            Headers thisHeader = new Headers();
-            //// thisHeader.DetectHeader();
-            thisHeader.DetectLineSpacingAfterBullets();
+            // InlineLists.RunTests();
 
+
+            //// Load a document we can play with.
+            Document doc = LoadDocument.Default();
+
+            InlineLists.DetectAll(doc);
+
+            // Comments.AddToEveryPara(doc);
+
+            Headers.DetectHeaders(doc);
+            Headers.DetectLineSpacingAfterBullets(doc);
+
+            LanguageChecker(doc);
+
+            //// Save to a new file.
+            doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
+
+            //// Keep the console open even when the program has finished.
+            ConsoleC.WriteLine(ConsoleColor.Green, "\nThe program has finished.");
             Console.ReadLine();
-
         }
+
         public static void LanguageChecker()
         {
-            Object wordObject = null;
-            Word.Application word = null;
-            Document document = null;
-
-
+            Document document = LoadDocument.Default();
             try
             {
-                object fileName = Filepath.Full(); 
+                // object fileName = Path.Combine("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "ftestdoc3.docx");
+
+                // Word.Application wordApp = new Word.Application { Visible = true };
+
                 // object fileName = Path.Combine(@"C:\Users\Duncan Ritchie\Documents\InformationCatalyst\AutoReviewer\AutoreviewerSideAssets", "EU-ID D01 - ZDMP-ID D1.1 - Project Handbook - Annex - StyleGuide v1.0.2.docx");
                 //}
                 //catch
@@ -43,37 +57,20 @@ namespace WordIterator
                 //    throw new FileNotFoundException("Filepath.Full() not working");
                 //}
               
-                Word.Application wordApp = new Word.Application { Visible = true };
-
-                Document aDoc = wordApp.Documents.Open(ref fileName, ReadOnly: false, Visible: true);
-
-                aDoc.Activate();
-                wordObject = (Word.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
-
-                word = (Microsoft.Office.Interop.Word.Application)wordObject;
-                word.Visible = false;
-                word.ScreenUpdating = false;
-                string fullPath = word.ActiveDocument.FullName;
-
-                document = word.ActiveDocument;
                 int count = document.Words.Count;
 
                 int countUKEnglish = 0;
                 int countUSEnglish = 0;
                 int countNotUKUSEnglish = 0;
 
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Checking the language of every word...");
+                ConsoleC.WriteLine(ConsoleColor.White, "Checking the language of every word...");
 
                 for (int k = 1; k <= count; k++)
                 {
                     //// Write a marker of where we are in the document every kth word.
                     if (k % 50 == 0)
                     {
-                        Console.BackgroundColor = ConsoleColor.Gray;
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.Write(" "+k+" / "+count+" ");
-                        Console.BackgroundColor = ConsoleColor.Black;
+                        ConsoleC.Write(ConsoleColor.Black, ConsoleColor.Gray, " "+k+" / "+count+" ");
                     }
 
                     string text = document.Words[k].Text;
@@ -98,11 +95,11 @@ namespace WordIterator
                     //    }
                     //    catch
                     //    {
-                    //        // Console.WriteLine("DetectLanguage() failed!");
+                    //        // ConsoleC.WriteLine(ConsoleColor.Red, "DetectLanguage() failed!");
                     //    }
 
                     //}
-           
+
 
                     //try
                     //{
@@ -110,38 +107,34 @@ namespace WordIterator
                     //}
                     //catch
                     //{
-                    //    Console.WriteLine("Correcting language failed!");
+                    //    ConsoleC.WriteLine(ConsoleColor.Red, "Correcting language failed!");
                     //}
 
                     //// Check language
 
                     if (document.Words[k].LanguageID == WdLanguageID.wdEnglishUK)
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write(text);
+                        ConsoleC.Write(ConsoleColor.Green, text);
                         countUKEnglish++;
-                        // Console.WriteLine("This is a UK/US English word.");
+                        // ConsoleC.WriteLine(ConsoleColor.Green, "\nThis is a UK/US English word.");
                     }
                     else if (document.Words[k].LanguageID == WdLanguageID.wdEnglishUS)
                     {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write(text);
+                        ConsoleC.Write(ConsoleColor.Yellow, text);
                         countUSEnglish++;
                         if (countUSEnglish % 10 == 1)
                         {
-                            Comments.Add(aDoc, k, "This is US English but should be UK English.");
+                            Comments.Add(document, k, "This is US English but should be UK English.");
                         }
                     }
                     else
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("\n" + text);
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("This is not a UK or US English word.");
+                        ConsoleC.WriteLine(ConsoleColor.Red, "\n" + text);
+                        ConsoleC.WriteLine(ConsoleColor.Red, "This is not a UK or US English word.");
                         countNotUKUSEnglish++;
                         if (countNotUKUSEnglish % 10 == 1)
                         {
-                            Comments.Add(aDoc, k, "This is not UK English but should be.");
+                            Comments.Add(document, k, "This is not UK English but should be.");
                         }
                         //try
                         //{
@@ -149,7 +142,7 @@ namespace WordIterator
                         //}
                         //catch
                         //{
-                        //    Console.WriteLine("Correcting language failed!");
+                        //    ConsoleC.WriteLine(ConsoleColor.Red, "Correcting language failed!");
                         //}
                     }
 
@@ -157,40 +150,33 @@ namespace WordIterator
 
                     /*
                     bool SpellingChecked = document.Words[k].SpellingChecked;
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Spelling check is set to " + (SpellingChecked ? "true" : "false"));
+                    ConsoleC.WriteLine(ConsoleColor.Yellow, "Spelling check is set to " + (SpellingChecked ? "true" : "false"));
                     //object SpellingChecked = document.Words(k).SpellingChecked;
                     */
 
                     //// Save to a new file.
                     try
                     {
-                        aDoc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
+                        document.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
                     }
                     catch (Exception ex)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Failed to save new file — "+ex.ToString());
+                        ConsoleC.WriteLine(ConsoleColor.Red, "Failed to save new file — "+ex.ToString());
                     }
 
                 }
                 
                 //// Give feedback after all the words have been checked.
-                
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("\nFinished checking language.");
+                ConsoleC.WriteLine(ConsoleColor.White, "\nFinished checking language.");
 
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(countUKEnglish + " words were UK English. This is good!");
+                ConsoleC.WriteLine(ConsoleColor.Green, countUKEnglish + " words were UK English. This is good!");
                 if (countUSEnglish > 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(countUSEnglish + " words were US English. Please change these to UK English.");
+                    ConsoleC.WriteLine(ConsoleColor.Yellow, countUSEnglish + " words were US English. Please change these to UK English.");
                 }
                 if (countNotUKUSEnglish > 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(countNotUKUSEnglish + " words were neither. Please change these to UK English.");
+                    ConsoleC.WriteLine(ConsoleColor.Red, countNotUKUSEnglish + " words were neither. Please change these to UK English.");
                 }
                 
                 //Boolean SpellingChecked = document.Words[k].SpellingChecked;
@@ -204,9 +190,42 @@ namespace WordIterator
                 //    Console.WriteLine(document.Characters[r]+ " " + document.Characters[r].CharacterStyle.toString());
                 //}
 
-                //Console.ForegroundColor = ConsoleColor.Green;
-                //Console.WriteLine("Finished iterating across document.");
+                //ConsoleC.WriteLine(ConsoleColor.White, "Finished iterating across document.");
 
+                if (document.LanguageDetected == true)
+                {
+
+
+
+                    document.LanguageDetected = false;
+                    document.DetectLanguage();
+
+
+
+                }
+                else
+                {
+                    document.DetectLanguage();
+                }
+
+                for (int k = 1; k <= document.Words.Count; k++)
+                {
+                    if (document.Words[k].LanguageID == WdLanguageID.wdEnglishUS || document.Words[k].LanguageID == WdLanguageID.wdEnglishUK)
+                    {
+
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("This is an English document.");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("This is not an English word.");
+                        document.Words[k].Font.ColorIndex = Word.WdColorIndex.wdYellow;
+                        Console.WriteLine(document.Words[k].Text);
+                    }
+                }
+                
+            
                 //if (document.Paragraphs.Count > 0)
                 //{
                 //    var paragraph = document.Paragraphs.First;
@@ -216,18 +235,115 @@ namespace WordIterator
             }
             catch (Exception ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(ex.ToString());
+                ConsoleC.WriteLine(ConsoleColor.Red, ex.ToString());
 
             }
-            Console.ResetColor();
+
             // Console.ReadLine();
-            if (word != null)
-            {
-                word.Quit();
+            // if (word != null)
+            // {
+            //     word.Quit();
+            // }
+            
+            finally { 
+                Console.ResetColor();
+
+                document.Save();
+                document.Close();
+                // word.Quit();
+                Console.ReadLine();
             }
 
+
+        }
+
+
+
+        public static void LanguageChecker(Document doc) {
+            try
+            {
+                int count = doc.Words.Count;
+
+                int countUKEnglish = 0;
+                int countUSEnglish = 0;
+                int countNotUKUSEnglish = 0;
+
+                ConsoleC.WriteLine(ConsoleColor.White, "Checking the language of every word...");
+
+                for (int k = 1; k <= count; k++)
+                {
+                    //// Write a marker of where we are in the document every kth word.
+                    if (k % 50 == 0)
+                    {
+                        ConsoleC.Write(ConsoleColor.Black, ConsoleColor.Gray, " " + k + " / " + count + " ");
+                    }
+
+                    string text = doc.Words[k].Text;
+
+                    //// Check language
+
+                    if (doc.Words[k].LanguageID == WdLanguageID.wdEnglishUK)
+                    {
+                        ConsoleC.Write(ConsoleColor.Green, text);
+                        countUKEnglish++;
+                        // ConsoleC.WriteLine(ConsoleColor.Green, "\nThis is a UK/US English word.");
+                    }
+                    else if (doc.Words[k].LanguageID == WdLanguageID.wdEnglishUS)
+                    {
+                        ConsoleC.Write(ConsoleColor.Yellow, text);
+                        countUSEnglish++;
+                        if (countUSEnglish % 10 == 1)
+                        {
+                            Comments.Add(doc, k, "This is US English but should be UK English.");
+                        }
+                    }
+                    else
+                    {
+                        ConsoleC.WriteLine(ConsoleColor.Red, "\n" + text);
+                        ConsoleC.WriteLine(ConsoleColor.Red, "This is not a UK or US English word.");
+                        countNotUKUSEnglish++;
+                        if (countNotUKUSEnglish % 10 == 1)
+                        {
+                            Comments.Add(doc, k, "This is not UK English but should be.");
+                        }
+                    }
+
+
+                    //////// Save to a new file.
+                    ////try
+                    ////{
+                    ////    doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
+                    ////}
+                    ////catch (Exception ex)
+                    ////{
+                    ////    ConsoleC.WriteLine(ConsoleColor.Red, "Failed to save new file — " + ex.ToString());
+                    ////}
+
+                }
+
+                //// Give feedback after all the words have been checked.
+                ConsoleC.WriteLine(ConsoleColor.White, "\nFinished checking language.");
+
+                ConsoleC.WriteLine(ConsoleColor.Green, countUKEnglish + " words were UK English. This is good!");
+                if (countUSEnglish > 0)
+                {
+                    ConsoleC.WriteLine(ConsoleColor.Yellow, countUSEnglish + " words were US English. Please change these to UK English.");
+                }
+                if (countNotUKUSEnglish > 0)
+                {
+                    ConsoleC.WriteLine(ConsoleColor.Red, countNotUKUSEnglish + " words were neither. Please change these to UK English.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ConsoleC.WriteLine(ConsoleColor.Red, ex.ToString());
+
+            }
         }
     }
    
+   
 }
+
+
+
