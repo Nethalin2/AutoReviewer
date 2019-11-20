@@ -33,7 +33,7 @@ namespace WordIterator
             try
             {
                
-                object fileName = Path.Combine("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "justatest.docx");
+                object fileName = Path.Combine("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST", "ftestdoc3.docx");
 
                 Word.Application wordApp = new Word.Application { Visible = true };
 
