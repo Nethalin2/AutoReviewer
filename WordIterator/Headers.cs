@@ -13,33 +13,24 @@ namespace WordIterator
     class Headers
     {
 
-        private static InteropManager im = new InteropManager(Filepath.Folder(), Filepath.FileOnly());
+        // private static InteropManager im = new InteropManager(Filepath.Folder(), Filepath.FileOnly());
 
-        private static Word.Application wordDoc = im.getWord();
-        private static Document doc = wordDoc.Application.ActiveDocument;
+        // private static Word.Application wordDoc = im.getWord();
+        // private static Document doc = wordDoc.Application.ActiveDocument;
 
-        //Document wordDoc = im.getWord();
-        public Headers()
+        // Document wordDoc = im.getWord();
+        //public Headers()
+        //{
+        //}
+
+        public static void DetectLineSpacingAfterBullets(Document doc)
         {
-        }
-
-        public string ShortString(string InputText, int MaxLength)
-        {
-            int l = InputText.Length;
-            int length = (l <= MaxLength ? l : MaxLength);
-            string newString = InputText.Substring(0, length);
-            return newString;
-        }
-
-        public void DetectLineSpacingAfterBullets()
-        {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Checking every bullet for 6pt line-spacing between indentation levels...");
+            ConsoleC.WriteLine(ConsoleColor.White, "Checking every bullet for 6pt line-spacing between indentation levels...");
 
             int badSpacingCount = 0;
             int badSpacingFailCount = 0;
 
-            //foreach (Paragraph paragraph in wordDoc.Application.ActiveDocument.Paragraphs)
+            // foreach (Paragraph paragraph in wordDoc.Application.ActiveDocument.Paragraphs)
             for (int i = 1; i < doc.Paragraphs.Count; i++)
             {
                 Paragraph paragraph = doc.Paragraphs[i];
@@ -62,26 +53,22 @@ namespace WordIterator
                         }
                         else
                         {
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine(paragraph.Range.Text);
+                            ConsoleC.WriteLine(ConsoleColor.Blue, paragraph.Range.Text);
                             //Console.WriteLine("This paragraph's left indent is different to the next paragraph's left indent.");
 
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("Detected line-spacing that should be 6pt but isn’t.");
+                            ConsoleC.WriteLine(ConsoleColor.Yellow, "Detected line-spacing that should be 6pt but isn’t.");
 
                             badSpacingCount++;
 
                             try
                             {
                                 paragraph.Format.SpaceAfter = 6;
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("Spacing has been changed to 6pt.");
+                                ConsoleC.WriteLine(ConsoleColor.Green, "Spacing has been changed to 6pt.");
                                 Comments.Add(doc, paragraph, "Line-spacing has been changed to 6pt.");
                             }
                             catch
                             {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Failed to automatically change line-spacing to 6pt.");
+                                ConsoleC.WriteLine(ConsoleColor.Red, "Failed to automatically change line-spacing to 6pt.");
                                 Comments.Add(doc, paragraph, "Line-spacing needs to change to 6pt.");
                                 badSpacingFailCount++;
                             }
@@ -89,76 +76,128 @@ namespace WordIterator
                     }
                     else
                     {
-                        //Console.WriteLine("This paragraph is a heading.");
+                        //ConsoleC.WriteLine(ConsoleColor.Green, "This paragraph is a heading.");
                     }
                 }
             }
 
             //// Give feedback having gone through the document.
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Finished checking every bullet.");
-            Console.ForegroundColor = badSpacingCount == 0 ? ConsoleColor.Green : ConsoleColor.Yellow;
-            Console.WriteLine("There were " + badSpacingCount + " instances where the spacing after a bullet needed to be changed to 6pt before a bullet of a different indentation.");
-            Console.ForegroundColor = badSpacingFailCount == 0 ? ConsoleColor.Green : ConsoleColor.Red;
-            Console.WriteLine("There are " + badSpacingFailCount + " instances where this could not be corrected automatically.");
+            ConsoleC.WriteLine(ConsoleColor.White, "Finished checking every bullet.");
+            ConsoleC.WriteLine(
+                (badSpacingCount == 0 ? ConsoleColor.Green : ConsoleColor.Yellow), 
+                "There were " + badSpacingCount + " instances where the spacing after a bullet " +
+                "needed to be changed to 6pt before a bullet of a different indentation."
+            );
+            ConsoleC.WriteLine(
+                (badSpacingFailCount == 0 ? ConsoleColor.Green : ConsoleColor.Red),
+                "There are " + badSpacingFailCount + " instances where this could not be corrected automatically."
+            );
 
             //// Save to a new file.
             doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
         }
 
-        public void DetectHeader()
-        {
-            
-            for (int i = 1; i < doc.Paragraphs.Count; i++)
+        //// Assuming the 'k'th paragraph in Document 'doc' is a first-level heading.
+        //// Every first-level heading should be followed by either a second-level heading,
+        //// circa 3 or 4 lines of body text and then a second-level heading,
+        //// or body text and no subheading.
+        public static void DetectParaAfterHeadingOne(Document doc, int k) {
+            ConsoleC.WriteLine(ConsoleColor.White, "Checking what’s after the heading...");
+            try {
+                Paragraph paragraph2 = doc.Paragraphs[k + 1];
+                try {
+                    Style style2 = paragraph2.get_Style() as Style;
+                    string styleName2 = style2.NameLocal;
+
+                    if (styleName2 == "Heading 2") {
+                        ConsoleC.WriteLine(ConsoleColor.Green, "First-level heading is followed by a second-level heading — good!");
+                    }
+                    //// Assuming 75 characters per line.
+                    else if (paragraph2.Range.Text.Length > 150 && paragraph2.Range.Text.Length < 375) {
+                        ConsoleC.WriteLine(ConsoleColor.Green, "First-level heading is followed by circa 3 or 4 lines of " + styleName2 + " — good!");
+                    }
+                    else {
+                        try {
+                            Paragraph paragraph3 = doc.Paragraphs[k + 2];
+                            Style style3 = paragraph3.get_Style() as Style;
+                            string styleName3 = style3.NameLocal;
+
+                            if (styleName3 == "Heading 2") {
+                                ConsoleC.WriteLine(ConsoleColor.Blue, paragraph2.Range.Text);
+                                string message = "After a first-level heading and before a second-level heading, there should be circa 3 or 4 lines of body text or none.";
+                                ConsoleC.WriteLine(ConsoleColor.Red, message);
+                                Comments.Add(doc, paragraph2, message);
+                            }
+                            else {
+                                ConsoleC.WriteLine(ConsoleColor.Green, "First-level heading is followed by " + styleName2 + " and " + styleName3 + " — good!");
+                            }
+                        }
+                        catch {
+                            ConsoleC.WriteLine(ConsoleColor.Green, "First-level heading is followed by " + styleName2 + " — good!");
+                        }
+                    }
+                }
+                catch {
+                    ConsoleC.WriteLine(ConsoleColor.Red, "Something failed with the style detection.");
+                }
+            }
+            catch {
+                ConsoleC.WriteLine(ConsoleColor.Red, "The last paragraph in the document is should not be a heading.");
+                Comments.Add(doc, doc.Paragraphs[k], "The last paragraph in the document should not be a heading.");
+            }
+        }
+
+        public static void DetectHeaders(Document doc) {
+            try {
+                for (int i = 1; i < doc.Paragraphs.Count; i++) {
+                    Paragraph paragraph = doc.Paragraphs[i];
+               
+                    Style style = paragraph.get_Style() as Style;
+                    int position = paragraph.ParaID;
+                    string styleName = style.NameLocal;
+                    string text = paragraph.Range.Text;
+
+                    ConsoleC.Write(ConsoleColor.DarkCyan, styleName + "   ");
+                    ConsoleC.Write(ConsoleColor.Cyan, position + "    ");
+                    ConsoleC.WriteLine(ConsoleColor.Blue, StringMethods.TrimAndShorten(text, 20));
+                    ////This checks the spacing after every paragraph.
+                    //if (position == 360681186)
+                    //{
+                    //    ConsoleC.WriteLine(ConsoleColor.Cyan, "Left indent: "+paragraph.Format.LeftIndent);
+                    //}
+
+                    //This checks the heading size.
+                    if (styleName == "Heading 1") 
+                    {
+                        ConsoleC.WriteLine(ConsoleColor.Green, "Acceptable heading size.");
+
+                        //// Check whether the first-level heading is followed by
+                        //// either a second-level heading or a 3–4 lines of body text.
+                        DetectParaAfterHeadingOne(doc, i);
+
+                    }
+                    else if (styleName == "Heading 2")
+                    {
+                        ConsoleC.WriteLine(ConsoleColor.Green, "Acceptable heading size.");
+                    }
+                    else if (styleName == "Heading 3")
+                    {
+                        ConsoleC.WriteLine(ConsoleColor.Green, "Acceptable heading size.");
+                    }
+                    else if (styleName == "Heading 4")
+                    {
+                        ConsoleC.WriteLine(ConsoleColor.Green, "Acceptable heading size.");
+                    }
+                    else if (styleName == "Heading 5" || styleName == "Heading 6")
+                    {
+                        ConsoleC.WriteLine(ConsoleColor.Red, "Header is too small.");
+                        Comments.Add(doc, paragraph, "Heading level should be 1, 2, 3, or 4, but this is a "+styleName+".");
+                    }
+                }
+            }
+            catch (Exception ex)
             {
-                Paragraph paragraph = doc.Paragraphs[i];
-                //Paragraph paragraph2 = doc.Paragraphs[i + 1];
-               
-               
-                Style style = paragraph.get_Style() as Style;
-                int position = paragraph.ParaID;
-                string styleName = style.NameLocal;
-                string text = paragraph.Range.Text;
-
-                Console.ForegroundColor = ConsoleColor.Green;
-
-                Console.WriteLine(styleName + " " + position+"    "+(ShortString(text, 20).Replace("/n", " ").Replace("/r", " ").Trim()));
-                //This checks the spacing after every paragraph.
-                //if (position == 360681186)
-                //{
-
-                //Console.ForegroundColor = ConsoleColor.Cyan;
-
-                //Console.WriteLine("Left indent: "+paragraph.Format.LeftIndent);
-                //}
-
-                Console.ForegroundColor = ConsoleColor.Blue;
-
-                //This checks the heading size.
-                if (styleName == "Heading 1") 
-                {
-                    Console.WriteLine("Correct Heading Size");
-                }
-                else if (styleName == "Heading 2")
-                {
-                    Console.WriteLine("Correct Heading Size");
-                }
-                else if (styleName == "Heading 3")
-                {
-                    Console.WriteLine("Correct Heading Size");
-                }
-                else if (styleName == "Heading 4")
-                {
-                    Console.WriteLine("Correct Heading Size");
-                }
-                else if (styleName == "Heading 5")
-                {
-                    Console.WriteLine("Header is too small");
-                }
-                else if (styleName == "Heading 6")
-                {
-                    Console.WriteLine("Header is too small");      
-                }
+                ConsoleC.WriteLine(ConsoleColor.Red, "Error in DetectHeaders() — " + ex.ToString());
             }
         }
     }

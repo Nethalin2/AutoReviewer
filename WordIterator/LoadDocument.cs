@@ -24,7 +24,7 @@ namespace WordIterator
                 Word.Application wordObject = (Word.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
 
                 Application word = (Microsoft.Office.Interop.Word.Application)wordObject;
-                word.Visible = false;
+                word.Visible = true;
                 word.ScreenUpdating = false;
 
                 return word.ActiveDocument;
