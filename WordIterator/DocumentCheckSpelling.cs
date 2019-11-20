@@ -14,11 +14,12 @@ namespace WordIterator
     {
         public static void DocCheckSpelling()
         {
-            var app = new Microsoft.Office.Interop.Word.Application();
+            // var app = new Microsoft.Office.Interop.Word.Application();
 
             try
             {
-                Document doc = app.Documents.Open("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST\\justatest.docx");
+                // Document doc = app.Documents.Open("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST\\justatest.docx");
+                Document doc = LoadDocument.Default();
 
                 foreach (var word in doc.Words.Cast<Range>())
                 {
@@ -35,7 +36,7 @@ namespace WordIterator
             finally
             {
                 Console.ReadLine();
-                app.Quit();
+                // app.Quit();
             }
         }
     }

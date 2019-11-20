@@ -67,6 +67,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentCheckSpelling.cs" />
+    <Compile Include="LoadDocument.cs" />
+    <Compile Include="Comments.cs" />
+    <Compile Include="Filepath.cs" />
     <Compile Include="Headers.cs" />
     <Compile Include="InteropManager.cs" />
     <Compile Include="Program.cs" />
