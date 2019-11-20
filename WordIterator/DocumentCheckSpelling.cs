@@ -35,7 +35,7 @@ namespace WordIterator
             }
             finally
             {
-                Console.ReadLine();
+                // Console.ReadLine();
                 // app.Quit();
             }
         }

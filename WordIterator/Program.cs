@@ -16,7 +16,8 @@ namespace WordIterator
         static void Main(string[] args)
         {
             // LanguageChecker();
-            //DocumentCheckSpelling.DocCheckSpelling();
+            // DocumentCheckSpelling.DocCheckSpelling();
+
             // InlineLists.RunTests();
 
 
@@ -25,12 +26,12 @@ namespace WordIterator
 
             InlineLists.DetectAll(doc);
 
-            //// Comments.AddToEveryPara(doc);
+            // Comments.AddToEveryPara(doc);
 
-            //Headers.DetectHeaders(doc);
-            //Headers.DetectLineSpacingAfterBullets(doc);
+            Headers.DetectHeaders(doc);
+            Headers.DetectLineSpacingAfterBullets(doc);
 
-            //LanguageChecker(doc);
+            LanguageChecker(doc);
 
             //// Save to a new file.
             doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
