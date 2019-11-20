@@ -9,6 +9,7 @@ using Word = Microsoft.Office.Interop.Word;
 using System.Windows.Forms;
 using System.Windows;
 
+
 namespace WordIterator
 {
     class Language
@@ -85,5 +86,6 @@ namespace WordIterator
 
             }
         }
+
     }
 }
