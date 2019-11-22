@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPlugin.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Spacing.cs" />
     <Compile Include="DocumentCheckSpelling.cs" />

@@ -17,8 +17,8 @@ namespace WordIterator
         {
             try
             {
-                ConsoleC.Write(ConsoleColor.White, "\nAdding a comment — ");
-                ConsoleC.WriteLine(ConsoleColor.Blue, comment);
+                ConsoleC.Write(ConsoleColor.White, "Adding a comment — ");
+                ConsoleC.WriteLine(ConsoleColor.Magenta, comment);
 
                 doc.Comments.Add(placeForComment.Range, ref comment);
             }
@@ -32,8 +32,8 @@ namespace WordIterator
         {
             try
             {
-                ConsoleC.Write(ConsoleColor.White, "\nAdding a comment of ");
-                ConsoleC.Write(ConsoleColor.Blue, comment);
+                ConsoleC.Write(ConsoleColor.White, "Adding a comment of ");
+                ConsoleC.Write(ConsoleColor.Magenta, comment);
                 ConsoleC.WriteLine(ConsoleColor.White, " to word #"+k+".");
 
                 doc.Comments.Add(doc.Words[k], ref comment);

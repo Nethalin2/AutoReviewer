@@ -17,21 +17,27 @@ namespace WordIterator
         {
             //// Load a document we can play with.
             Document doc = LoadDocument.Default();
-            DocumentCheckSpelling.DocCheckSpelling(doc);
+
+            // DocumentCheckSpelling.DocCheckSpelling(doc);
 
             // InlineLists.RunTests();
 
-
+            Console.WriteLine("\n");
             
 
             InlineLists.DetectAll(doc);
 
+            Console.WriteLine("\n");
+
             // Comments.AddToEveryPara(doc);
 
             Headers.DetectHeaders(doc);
+
+            Console.WriteLine("\n");
+
             Headers.DetectLineSpacingAfterBullets(doc);
 
-            Language.LanguageChecker(doc);
+            // Language.LanguageChecker(doc);
 
             //// Save to a new file.
             doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));

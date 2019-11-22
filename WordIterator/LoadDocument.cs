@@ -14,18 +14,21 @@ namespace WordIterator
         {
             try
             {
+                ConsoleC.WriteLine(ConsoleColor.White, "Trying to load a file...");
+               
                 object fileName = Filepath.Full();
 
-                Word.Application wordApp = new Word.Application { Visible = true };
+                Application wordApp = new Word.Application { Visible = true };
 
                 Document aDoc = wordApp.Documents.Open(ref fileName, ReadOnly: false, Visible: true);
 
                 aDoc.Activate();
-                Word.Application wordObject = (Word.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
+                Application word = (Word.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
 
-                Application word = (Microsoft.Office.Interop.Word.Application)wordObject;
                 word.Visible = true;
                 word.ScreenUpdating = false;
+
+                ConsoleC.WriteLine(ConsoleColor.Green, "The file has loaded.");
 
                 return word.ActiveDocument;
             }

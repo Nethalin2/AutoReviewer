@@ -26,6 +26,8 @@ namespace WordIterator
                     if (word.SpellingErrors.Count > 0)
                     {
                         Console.WriteLine("This word is spelt incorrectly " + word.Text);
+                        //// Uncomment the next line when Comments.Add can accept a Word.Range type.
+                        // Comments.Add(doc, word, "This word is not spelt correctly.");
                     }
                 }
             }
