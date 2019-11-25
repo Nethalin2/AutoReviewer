@@ -93,8 +93,8 @@ namespace WordIterator
                 "There are " + badSpacingFailCount + " instances where this could not be corrected automatically."
             );
 
-            //// Save to a new file.
-            doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
+            ////// Save to a new file.
+            //doc.SaveAs2(Filepath.FullNew());
         }
 
         //// Assuming the 'k'th paragraph in Document 'doc' is a first-level heading.
@@ -194,6 +194,7 @@ namespace WordIterator
                         Comments.Add(doc, paragraph, "Heading level should be 1, 2, 3, or 4, but this is a "+styleName+".");
                     }
                 }
+                ConsoleC.WriteLine(ConsoleColor.White, "Finished checking headings.");
             }
             catch (Exception ex)
             {

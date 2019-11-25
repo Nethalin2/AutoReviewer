@@ -13,54 +13,43 @@ public class Filepath
     private static readonly String fullMark = Path.Combine(folderMark, fileMark);
     private static readonly bool usingMarksFile = File.Exists(fullMark);
     private static readonly bool usingDuncansFile = File.Exists(fullDuncan);
-    private static readonly FileNotFoundException exception = new FileNotFoundException("Neither Mark’s nor Duncan’s file was found"); 
+    private static readonly String newFileEnding = "_2";
+    private static readonly FileNotFoundException exception = new FileNotFoundException("Neither Mark’s nor Duncan’s file was found");
 
-
-    public static String Full()
+    //// Used inside the three following functions (Full, Folder, File) to save repetition of the if-else statements.
+    private static String IfStatements(String mark, String duncan)
     {
         if (usingMarksFile)
         {
-            return fullMark;
+            return mark;
         }
         else if (usingDuncansFile)
         {
-            return fullDuncan;
+            return duncan;
         }
         else
         {
             throw exception;
         }
+    }
+
+    public static String Full()
+    {
+        return IfStatements(fullMark, fullDuncan);
     }
 
     public static String Folder()
     {
-        if (usingMarksFile)
-        {
-            return folderMark;
-        }
-        else if (usingDuncansFile)
-        {
-            return folderDuncan;
-        }
-        else
-        {
-            throw exception;
-        }
+        return IfStatements(folderMark, folderDuncan);
     }
 
     public static String FileOnly()
     {
-        if (usingMarksFile)
-        {
-            return fileMark;
-        }
-        else if (usingDuncansFile)
-        {
-            return fileDuncan;
-        }
-        else
-        {
-            throw exception;
-        }
+        return IfStatements(fileMark, fileDuncan);
+    }
+
+    public static String FullNew()
+    {
+        return Full().Replace(".docx", newFileEnding+".docx");
     }
 }

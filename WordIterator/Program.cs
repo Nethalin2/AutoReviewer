@@ -40,7 +40,9 @@ namespace WordIterator
             // Language.LanguageChecker(doc);
 
             //// Save to a new file.
-            doc.SaveAs2(Filepath.Full().Replace(".docx", "_2.docx"));
+            string newFilepath = Filepath.FullNew();
+            doc.SaveAs2(newFilepath);
+            ConsoleC.WriteLine(ConsoleColor.Green, "\nA file has been created with comments and edits at "+newFilepath);
 
             //// Keep the console open even when the program has finished.
             ConsoleC.WriteLine(ConsoleColor.Green, "\nThe program has finished.");

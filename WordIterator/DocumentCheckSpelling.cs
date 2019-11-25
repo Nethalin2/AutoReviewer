@@ -21,15 +21,20 @@ namespace WordIterator
                 // Document doc = app.Documents.Open("C:\\Users\\netha\\Documents\\FSharpTest\\FTEST\\justatest.docx");
                 //Document doc = LoadDocument.Default();
 
+                int countErrors = 0;
+
                 foreach (var word in doc.Words.Cast<Range>())
                 {
                     if (word.SpellingErrors.Count > 0)
                     {
                         Console.WriteLine("This word is spelt incorrectly " + word.Text);
+                        countErrors++;
                         //// Uncomment the next line when Comments.Add can accept a Word.Range type.
                         // Comments.Add(doc, word, "This word is not spelt correctly.");
                     }
                 }
+                ConsoleC.WriteLine(ConsoleColor.White, "The spelling check is complete.");
+                ConsoleC.WriteLine(countErrors > 0 ? ConsoleColor.Red : ConsoleColor.Green, "There were " + countErrors + " spelling errors.");
             }
             catch
             {
