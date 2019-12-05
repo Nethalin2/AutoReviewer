@@ -10,29 +10,35 @@ namespace WordIterator
 {
     class LoadDocument
     {
-        public static Word.Document Default()
+        public static Document Default()
         {
             try
             {
-                object fileName = Filepath.Full();
+                return AnyDoc(Filepath.Full());
+            }
+            catch
+            {
+                throw new Exception("Error loading default document.");
+            }
+        }
+        public static Document AnyDoc(string filepath)
+        {
+            try
+            {
+                object fileName = filepath;
 
-                Word.Application wordApp = new Word.Application { Visible = true };
+                Application wordApp = new Application { Visible = true };
 
                 Document aDoc = wordApp.Documents.Open(ref fileName, ReadOnly: false, Visible: true);
 
                 aDoc.Activate();
-                Word.Application wordObject = (Word.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
 
-                Application word = (Microsoft.Office.Interop.Word.Application)wordObject;
-                word.Visible = true;
-                word.ScreenUpdating = false;
-
-                return word.ActiveDocument;
+                return (aDoc);
             }
             catch
             {
-                throw new Exception("Error loading default document!");
+                throw new Exception("Error loading document " + filepath + "!");
             }
-        }    
+        }
     }
 }
